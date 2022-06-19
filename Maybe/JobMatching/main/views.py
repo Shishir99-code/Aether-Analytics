@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from requests import request
-from .forms import RegisterForm, MentorshipForm
+from .forms import RegisterForm, MentorshipForm, ChatForm
 from django.contrib.auth import login, logout, authenticate
 
 # Create your views here.
@@ -33,3 +33,15 @@ def mentor_up(request):
 
 def chat(request):
     return render(request, 'main/chat.html')
+
+def find(request):
+    if request.method == 'POST':
+        form_3= ChatForm(request.POST)
+        if form_3.is_valid():
+            user = form_3.save()
+            login(request, user)
+            return redirect('/chat')
+    else:
+        form_3 = ChatForm()
+
+    return render(request, 'main/home.html', {"form3": form_3})

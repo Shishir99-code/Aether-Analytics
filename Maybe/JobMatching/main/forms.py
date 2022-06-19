@@ -6,14 +6,25 @@ from django.contrib.auth.models import User
 from numpy import require
 import pandas as pd
 import os
+from requests import request
 
-from sqlalchemy import except_
+from sqlalchemy import except_, null
 
 CHOICES = [
     ('Limited', 'LIMITED'),
     ('Moderate', 'MODERATE'),
     ('Free', 'FREE'),
     ]
+
+YEARS = [
+    ('Years', 'Years'),
+    ('0-1', '0-1'),
+    ('1-2', '1-2'),
+    ('2-3', '2-3'),
+    ('3-4', '3-4'),
+    ('4-5', '4-5'),
+    ('5+', '5+'),
+]
 
 df_location = pd.read_csv("Data/us_cities_states_counties.csv", sep='|')
 df_company = pd.read_csv("Data/nasdaq-listed.csv")
@@ -37,7 +48,7 @@ CITIES = cities_dictionary
 
 
 class RegisterForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+    username = forms.CharField(label= 'Email')
     first_name = forms.CharField(max_length=100, required=True)
     last_name = forms.CharField(max_length=100, required=True)
     University = forms.CharField(label='University(Current/Alumni)', required=True)
@@ -52,7 +63,7 @@ class RegisterForm(UserCreationForm):
     
     class Meta:
         model = User
-        fields = [ 'email', 'password1', 'password2',]
+        fields = ['username']
 
     
 class MentorshipForm(forms.ModelForm):
@@ -64,8 +75,18 @@ widget = forms.Select(choices=COMPANY))
 widget = forms.Select(choices=STATE), )
     City = forms.CharField(max_length=100, required=False,
 widget = forms.Select(choices=CITIES)) 
+    username = forms.CharField(label='Years of Experience', required=False,
+widget = forms.Select(choices=YEARS))
 
 
     class Meta:
         model = User
-        fields = []
+        fields = ['username']
+
+class ChatForm(forms.ModelForm):
+    Company = forms.CharField(max_length=100, required=False,
+widget = forms.Select(choices=COMPANY))
+
+    class Meta:
+        model = User
+        fields = ['username']
