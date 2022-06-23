@@ -19,27 +19,38 @@
 <br>
 <br>
     <center>
-        <form action='/data' method='post'>
+        <form action='/homeroom' method='post'>
+            {% csrf_token %}
             <label for="Desired Job Title/Pathway" style="font-size: 30px">Desired Job Title/Pathway</label>
             <br>
             <select name="cars" id="cars">
-            <option value="volvo">---------</option>
-            <option value="saab">---------</option>
-            <option value="mercedes">---------</option>
-            <option value="audi">---------</option>
+            <option value="volvo">Software Engineer</option>
+            <option value="saab">Hardware Developer</option>
+            <option value="mercedes">Systems Administrator</option>
+            <option value="audi">Marketing Technologist</option>
+            <option value="audi">Web Analytics Developer</option>
+            <option value="audi">Content Manager</option>
+            <option value="audi">Content Strategist</option>
+            <option value="audi">Information Architect</option>
+            <option value="audi">UX Designer</option>
             </select>
             <br>
-            <label for="Desired Job Title/Pathway" style="font-size: 30px">Specific Desired Company</label>
+            <label for="Specific Desired Company" style="font-size: 30px">Specific Desired Company</label>
             <br>
             <p style="text-align:center">
             <select name="cars" id="cars" style="align:center">
-            <option value="volvo">---------</option>
-            <option value="saab">---------</option>
-            <option value="mercedes">---------</option>
-            <option value="audi">---------</option>
+            <option value="volvo">Apple Inc.</option>
+            <option value="saab">Alphabet Inc.</option>
+            <option value="mercedes">Microsoft Corporation</option>
+            <option value="audi">Samsung Group</option>
+            <option value="audi">Tencent Holdings Ltd.</option>
+            <option value="audi">Meta Platforms</option>
+            <option value="audi">Intel Corporation</option>
+            <option value="audi">Cisco Systems Inc.</option>
             </select>
             </p>
-            <button onclick="location.href = 'http://127.0.0.1:8000/chat ;" type="submit" class="btn btn-success" style="float:right;margin-top:300px">Submit</button>
+            <p style="text-align:center">
+            <button onclick="location.href = 'http://127.0.0.1:8000/homeroom';" type="submit" class="btn btn-success" style="float:center;margin-top:300px">Submit</button></p>
         </form>
     </center>
 
