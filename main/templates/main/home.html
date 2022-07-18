@@ -1,0 +1,105 @@
+Skip to content
+Search or jump to…
+Pull requests
+Issues
+Marketplace
+Explore
+ 
+@Shishir99-code 
+Shishir99-code
+/
+Aether-Analytics
+Private
+Code
+Issues
+Pull requests
+Actions
+Projects
+Security
+Insights
+Settings
+Aether-Analytics/Maybe/JobMatching/main/templates/main/home.html
+@aawasthi30
+aawasthi30 Update home.html
+Latest commit 9399a70 13 days ago
+ History
+ 2 contributors
+@Shishir99-code@aawasthi30
+62 lines (58 sloc)  2.67 KB
+
+{% extends 'main/base.html' %}
+{% block title %}Home Page{% endblock %}
+{% block content %}
+<style>
+    body {
+        background: rgb(222, 241, 243);
+        font-family: 'Cambria';
+    }
+
+    
+</style>
+<p style='text-align:left;padding-left:470px;float:left;color:#001540;font-size:50px'><b>Aether</b></p>
+<p style='float:right;align:right;padding-right:440px;color:#001540;border-bottom:1px;font-size:50px'><b>Analytics<b></p>
+<br>
+<p style="text-align:center;"><img src="https://drive.google.com/uc?export=view&id=1Vh7Jdmh6Q3ghLuUII13uCXxgzSmkHJYf" width="160" height="140" class="rounded-circle"></p>
+
+<hr style="border:none;height:10px;background:#001540;width:100%;margin-left:10px;opacity:10;width:100%;">
+<br>
+<br>
+<br>
+<br>
+<br>
+    <center>
+        <form action='/homeroom' method='post'>
+            {% csrf_token %}
+            <label for="Desired Job Title/Pathway" style="font-size: 30px">Desired Job Title/Pathway</label>
+            <br>
+            <select name="cars" id="cars">
+            <option value="volvo">Software Engineer</option>
+            <option value="saab">Hardware Developer</option>
+            <option value="mercedes">Systems Administrator</option>
+            <option value="audi">Marketing Technologist</option>
+            <option value="audi">Web Analytics Developer</option>
+            <option value="audi">Content Manager</option>
+            <option value="audi">Content Strategist</option>
+            <option value="audi">Information Architect</option>
+            <option value="audi">UX Designer</option>
+            </select>
+            <br>
+            <label for="Specific Desired Company" style="font-size: 30px">Specific Desired Company</label>
+            <br>
+            <p style="text-align:center">
+            <select name="cars" id="cars" style="align:center">
+            <option value="volvo">Apple Inc.</option>
+            <option value="saab">Alphabet Inc.</option>
+            <option value="mercedes">Microsoft Corporation</option>
+            <option value="audi">Samsung Group</option>
+            <option value="audi">Tencent Holdings Ltd.</option>
+            <option value="audi">Meta Platforms</option>
+            <option value="audi">Intel Corporation</option>
+            <option value="audi">Cisco Systems Inc.</option>
+            </select>
+            </p>
+            <p style="text-align:center">
+            <button onclick="location.href = 'http://127.0.0.1:8000/homeroom';" type="submit" class="btn btn-success" style="float:center;margin-top:50px">Submit</button></p>
+        </form>
+    </center>
+
+    <head>
+        <link rel="stylesheet" href="style.css">
+    </head>
+{% endblock %}
+Footer
+© 2022 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Docs
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
