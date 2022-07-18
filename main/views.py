@@ -19,16 +19,13 @@ def sign_up(request):
     return render(request, 'registration/sign_up.html', context)
 
 def mentor_up(request):
+    form = MentorshipForm()
     if request.method == 'POST':
-        form_two= MentorshipForm(request.POST)
-        if form_two.is_valid():
-            user = form_two.save()
-            login(request, user)
-            return redirect('/home')
-    else:
-        form_two = MentorshipForm()
-
-    return render(request, 'registration/mentor_up.html', {"form2": form_two})
+        form = MentorshipForm(request.POST)
+        if form.is_valid():
+            form.save()
+    context = {'form2': form}
+    return render(request, 'registration/mentor_up.html', context)
 
 def chat(request):
     return render(request, 'chat/room.html')

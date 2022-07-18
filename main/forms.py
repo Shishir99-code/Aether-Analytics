@@ -1,4 +1,5 @@
 from email.policy import default
+from pyexpat import model
 from selectors import DefaultSelector
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
@@ -7,7 +8,7 @@ from numpy import require
 import pandas as pd
 import os
 from requests import request
-from .models import Registration
+from .models import Mentoration, Registration
 from django.forms import ModelForm
 
 from sqlalchemy import except_, null
@@ -68,22 +69,11 @@ class RegisterForm(UserCreationForm):
         fields = ['username']
 
     
-class MentorshipForm(forms.ModelForm):
-    Company = forms.CharField(max_length=100, required=False,
-widget = forms.Select(choices=COMPANY))
-    Position = forms.CharField(max_length=200, required=False,)
-    Department = forms.CharField(max_length=200, required=False,)
-    State = forms.CharField(max_length=100, required=False,
-widget = forms.Select(choices=STATE), )
-    City = forms.CharField(max_length=100, required=False,
-widget = forms.Select(choices=CITIES)) 
-    username = forms.CharField(label='Years of Experience', required=False,
-widget = forms.Select(choices=YEARS))
-
+class MentorshipForm(ModelForm):
 
     class Meta:
-        model = User
-        fields = ['username']
+        model = Mentoration
+        fields = '__all__'
 
 class ChatForm(forms.ModelForm):
     Company = forms.CharField(max_length=100, required=False,
@@ -100,3 +90,4 @@ class RegistrationForm(ModelForm):
     class Meta:
         model = Registration
         fields = '__all__'
+
