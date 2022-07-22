@@ -1,0 +1,77 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.header{
+    min-height: 70vh;
+    width: 100%;
+    background-image: url(https://drive.google.com/uc?export=view&id=1Q7zdtuC_e0G0P7TvUiSB2kwRapFejHgw), url(https://drive.google.com/uc?export=view&id=16-_hTxQXmquy7hscgHYqS-k8UhBd8_Lx);
+    background-position: center, bottom;
+    background-size: cover;
+    position: relative;
+    background-repeat: no-repeat;
+}
+
+.text-box{
+    width: 90%;
+    color: #fff;
+    position: absolute;
+    top: 30%;
+    left: 5%;
+    transform: translat(-50%, -50%);
+    text-align: center;
+}
+
+.text-box h1{
+    font-size: 62px;
+}
+
+/*----- about us------*/
+
+.aboutus{
+    width: 80%;
+    margin:auto;
+    text-align: center;
+    padding-top: 100px;
+}
+
+.aboutus h2{
+    font-size: 36px;
+    font-weight: 600;
+}
+
+.aboutus p{
+    color: black;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 22px;
+    padding: 10px;
+
+}
+
+.row{
+    margin: 5%;
+    display:flex;
+    justify-content: space-between;
+}
+
+.bio{
+    flex-basis: 23%;
+    background: #fff3f3;
+    border-radius: 10px;
+    margin-bottom: 5%;
+    padding: 10px 10px;
+    box-sizing: border-box; 
+    transition: 0.5s;
+}
+
+h3{
+    text-align: center;
+    font-weight: 600;
+    margin: 10px 0;
+}
+
+.bio:hover{
+    box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+}
+
