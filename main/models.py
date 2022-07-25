@@ -56,6 +56,7 @@ class Registration(models.Model):
     email = models.EmailField(max_length=60)
     first_name = models.CharField(max_length=60)
     last_name = models.CharField(max_length=60)
+    phone_number = models.CharField(max_length=12)
     password = models.CharField(max_length=60)
     University = models.CharField(max_length=60)
     Years_of_Experience = models.CharField(max_length=60, choices=YEARS, default='1-2')

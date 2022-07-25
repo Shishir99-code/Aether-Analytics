@@ -138,14 +138,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-DEFAULT_FROM_EMAIL='webmaster@localhost' 
-SERVER_EMAIL='root@localhost'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp-mail.outlook.com'
-EMAIL_HOST = 'localhost' 
-# EMAIL_PORT = 587
-EMAIL_PORT = 25
-# EMAIL_HOST_USER = 'aetheranalyticsgroup@outlook.com'
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_PORT = 587
+
+EMAIL_HOST_USER = 'aetheranalyticsgroup@outlook.com'
 EMAIL_USE_TLS = True
 EMAIL_HOST_PASSWORD = 'lomuivayavjcswld'
 

@@ -1,83 +1,46 @@
 {% extends 'main/base.html' %}
 {% block title %}Home Page{% endblock %}
+{% load crispy_forms_tags %}
 {% block content %}
 <style>
     body {
-        background: rgb(222, 241, 243);
+        background-image: url("https://drive.google.com/uc?export=view&id=1PFbbWR28WEYXUYPDr3cH1FCpxkYLBKUs");
+        input {max-width: 6em};
         font-family: 'Cambria';
     }
 
+    .alert {
+        width:40%;    
+     }
+
     
 </style>
-<p style='text-align:left;padding-left:470px;float:left;color:#001540;font-size:50px'><b>Aether</b></p>
-<p style='float:right;align:right;padding-right:440px;color:#001540;border-bottom:1px;font-size:50px'><b>Analytics<b></p>
 <br>
-<p style="text-align:center;"><img src="https://drive.google.com/uc?export=view&id=1Vh7Jdmh6Q3ghLuUII13uCXxgzSmkHJYf" width="160" height="140" class="rounded-circle"></p>
+<br>
+<br>
+<br>
+<br>
+<!--<p style='text-align:left;padding-left:150;float:left;color:#001540;font-size:50px'><b>Aether Analytics</b></p>-->
+<br>
+<!--<p style="text-align:center;"><img src="https://drive.google.com/uc?export=view&id=1Vh7Jdmh6Q3ghLuUII13uCXxgzSmkHJYf" width="160" height="140" class="rounded-circle"></p>-->
+<br>
+<br>
+<br>
 
-<hr style="border:none;height:10px;background:#001540;width:100%;margin-left:10px;opacity:10;width:100%;">
-<br>
-<br>
-<br>
-<br>
-<br>
-    <center>
-        <form action='/action_page.php' method='post'>
-            {% csrf_token %}
-            <label for="Desired Job Title/Pathway" style="font-size: 30px">Desired Job Title/Pathway</label>
-            <br>
-            <select name="Position" id="position">
-            <option value="Software Engineer">Software Engineer</option>
-            <option value="Hardware Developer">Hardware Developer</option>
-            <option value="Systems Administrator">Systems Administrator</option>
-            <option value="Marketing Technologist">Marketing Technologist</option>
-            <option value="Web Analytics Developer">Web Analytics Developer</option>
-            <option value="Content Manager">Content Manager</option>
-            <option value="Content Strategist">Content Strategist</option>
-            <option value="Information Architect">Information Architect</option>
-            <option value="UX Designer">UX Designer</option>
-            </select>
-            <br>
-            <label for="Specific Desired Company" style="font-size: 30px">Specific Desired Company</label>
-            <br>
-            <p style="text-align:center">
-            <select name="Company" id="companies" style="align:center">
-            <option value="Apple Inc.">Apple Inc.</option>
-            <option value="Alphabet Inc.">Alphabet Inc.</option>
-            <option value="Microsoft Corporation">Microsoft Corporation</option>
-            <option value="Samsung Group">Samsung Group</option>
-            <option value="Tencent Holdings Ltd.">Tencent Holdings Ltd.</option>
-            <option value="Meta Platforms">Meta Platforms</option>
-            <option value="Intel Corporation">Intel Corporation</option>
-            <option value="Cisco Systems Inc.">Cisco Systems Inc.</option>
-            </select>
-            </p>
-            <p style="text-align:center">
-            <button onclick="location.href = 'http://127.0.0.1:8000/homeroom';" type="submit" class="btn btn-success" style="float:center;margin-top:50px">Submit</button></p>
+
+    <left>
+        <br>
+        {%for msg in messages %}
+        <div class="alert alert-danger" role="alert">
+            Invalid login information | Check your username and password!
+        </div>
+        {% endfor %}
+        <form method="post">
+            {% csrf_token %}{{form|crispy}}
+            <button type="submit" class="btn btn-primary">Login</button>
         </form>
-    </center>
-
-    <script>
-        var position = document.getElementsByName("Position")[0].value;
-        var company = document.getElementsByName("Company")[0].value;
-        console.log(position)
-        console.log(company)
-    </script>
 
     <head>
         <link rel="stylesheet" href="style.css">
     </head>
-{%endblock%}
-Footer
-© 2022 GitHub, Inc.
-Footer navigation
-Terms
-Privacy
-Security
-Status
-Docs
-Contact GitHub
-Pricing
-API
-Training
-Blog
-About
+{% endblock %}

@@ -10,9 +10,17 @@ import os
 from requests import request
 from .models import MatchForm, Registration, login
 from django.forms import ModelForm
+
          
 class RegistrationForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
+    University = forms.CharField(required=False)
+    Years_of_Experience = forms.CharField(required=False)
+    Company = forms.CharField(required=False)
+    Department = forms.CharField(required=False)
+    Position = forms.CharField(required=False)
+    State = forms.CharField(required=False)
+    City = forms.CharField(required=False)
 
     class Meta:
         model = Registration
@@ -25,7 +33,12 @@ class match_form(ModelForm):
         fields = '__all__'
 
 class login_form(ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'style':'max-width: 24em'}))
+    email = forms.EmailField(
+    max_length=64,
+    widget=forms.TextInput(attrs={'style':'max-width: 24em'}),
+    required=True)
+    
 
     class Meta:
         model = login

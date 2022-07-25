@@ -1,9 +1,21 @@
+
 {% extends 'main/base.html' %}
 {% block title %}
 Match Form
 {% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
+<style>
+  body {
+      font-family: 'Cambria';
+  }
+
+  .alert {
+      width:40%;    
+   }
+
+  
+</style>
 <br>
 {%for msg in messages %}
 <div class="alert alert-danger" role="alert">

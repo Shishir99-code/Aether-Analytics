@@ -12,10 +12,36 @@ from django.contrib import messages
 from django.core.mail import EmailMessage, send_mail
 import random
 import string
+from twilio.rest import Client
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 # Create your views here.
 def home(request):
-    return render(request, 'main/home.html')
+    form = login_form()
+    if request.method == 'POST':
+        form = login_form(request.POST)
+
+        if form.is_valid():
+                form.save()
+                login_email = form.cleaned_data['email']
+                password = form.cleaned_data['password']
+                request.session['username' ] = login_email
+                request.session['password'] = password
+                filtered_user = Registration.objects.filter(email=login_email)
+                user_auth = Registration.objects.filter(email=login_email).count()
+                pwd_auth = Registration.objects.filter(password=password).count()
+                if user_auth >= 1 and pwd_auth >= 1:
+                    print(filtered_user)
+                    return redirect('/match')
+                else:
+                    messages.error(request, 'Invalid login information! | Check your username and password.')
+                    login_form()
+
+    return render(request, 'main/home.html', {"form": form})
+
+def about(request):
+    return render(request, 'registration/about.html')
 
 def sign_up(request):
     form = RegistrationForm()
@@ -89,29 +115,6 @@ def getMessages(request, room):
     return JsonResponse({"messages":list(messages.values())})
 
 
-def loginform(request):
-    form = login_form()
-    if request.method == 'POST':
-        form = login_form(request.POST)
-
-        if form.is_valid():
-                form.save()
-                login_email = form.cleaned_data['email']
-                password = form.cleaned_data['password']
-                request.session['username' ] = login_email
-                request.session['password'] = password
-                filtered_user = Registration.objects.filter(email=login_email)
-                user_auth = Registration.objects.filter(email=login_email).count()
-                pwd_auth = Registration.objects.filter(password=password).count()
-                if user_auth >= 1 and pwd_auth >= 1:
-                    print(filtered_user)
-                    return redirect('/match')
-                else:
-                    messages.error(request, 'Invalid login information! | Check your username and password.')
-                    login_form()
-
-    return render(request, 'registration/login.html', {"form": form})
-
 def matchForm(request):
     form = match_form()
     if request.method == 'POST':
@@ -142,8 +145,42 @@ def matchForm(request):
             else:
                 match_email = email_potential_matches[0][0]
 
+            user_phone_number = list(Registration.objects.filter(email=login_email).values_list('phone_number'))[0][0]
+            match_phone_number = list(Registration.objects.filter(email=match_email).values_list('phone_number'))[0][0]
+            print(user_phone_number)
             characters = string.ascii_uppercase
             room_code = ''.join(random.choice(characters) for i in range(5))
+            API_key = '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'
+            user_message = Mail(from_email='aetheranalyticsgroup@gmail.com',
+                                to_emails=login_email,
+                                subject=f'Chat Room Code for {job_path} at {company_name}',
+                                plain_text_content=f'Your Room Code is {room_code}',
+                                html_content=f'Your Room Code is {room_code}')
+                                
+            try:
+                sg = SendGridAPIClient(API_key)
+                response = sg.send(user_message)
+                print(response.status_code)
+                print(response.body)
+                print(response.headers)
+            except Exception as e:
+                print(e.message)
+
+            match_message = Mail(from_email='aetheranalyticsgroup@gmail.com',
+                                to_emails=login_email,
+                                subject=f'Chat Room Invite Code for {job_path} at {company_name}',
+                                plain_text_content=f'Someone is looking for job advice. Join your room using - {room_code}',
+                                html_content=f'Someone is looking for job advice. Join your room using - {room_code}')
+            try:
+                sg = SendGridAPIClient(API_key)
+                response = sg.send(match_message)
+                print(response.status_code)
+                print(response.body)
+                print(response.headers)
+            except Exception as e:
+                print(e.message)
+            return redirect('/homeroom')
+
             # send_mail(
             #     f'Chat Room Code for {job_path} at {company_name}',
             #     f'Your Room Code is {room_code}',
@@ -159,9 +196,6 @@ def matchForm(request):
             #     [match_email],
             #     fail_silently=False,
             # )
-
-            email = EmailMessage('Hello', 'World', to=[match_email])
-            email.send()
             # return redirect('/homeroom')
         else: 
             form = match_form()

@@ -11,5 +11,5 @@ urlpatterns = [
     path('send', views.send, name='send'),
     path('getMessages/<str:room>/', views.getMessages, name='getMessages'),
     path('match', views.matchForm, name='matchForm'),
-    path('login', views.loginform, name='login'),
+    path('about', views.about, name='about')
 ]
