@@ -1,32 +1,3 @@
-Skip to content
-Search or jump to…
-Pull requests
-Issues
-Marketplace
-Explore
- 
-@Shishir99-code 
-Shishir99-code
-/
-Aether-Analytics
-Private
-Code
-Issues
-Pull requests
-Actions
-Projects
-Security
-Insights
-Settings
-Aether-Analytics/Maybe/JobMatching/main/templates/main/home.html
-@aawasthi30
-aawasthi30 Update home.html
-Latest commit 9399a70 13 days ago
- History
- 2 contributors
-@Shishir99-code@aawasthi30
-62 lines (58 sloc)  2.67 KB
-
 {% extends 'main/base.html' %}
 {% block title %}Home Page{% endblock %}
 {% block content %}
@@ -50,34 +21,34 @@ Latest commit 9399a70 13 days ago
 <br>
 <br>
     <center>
-        <form action='/homeroom' method='post'>
+        <form action='/action_page.php' method='post'>
             {% csrf_token %}
             <label for="Desired Job Title/Pathway" style="font-size: 30px">Desired Job Title/Pathway</label>
             <br>
-            <select name="cars" id="cars">
-            <option value="volvo">Software Engineer</option>
-            <option value="saab">Hardware Developer</option>
-            <option value="mercedes">Systems Administrator</option>
-            <option value="audi">Marketing Technologist</option>
-            <option value="audi">Web Analytics Developer</option>
-            <option value="audi">Content Manager</option>
-            <option value="audi">Content Strategist</option>
-            <option value="audi">Information Architect</option>
-            <option value="audi">UX Designer</option>
+            <select name="Position" id="position">
+            <option value="Software Engineer">Software Engineer</option>
+            <option value="Hardware Developer">Hardware Developer</option>
+            <option value="Systems Administrator">Systems Administrator</option>
+            <option value="Marketing Technologist">Marketing Technologist</option>
+            <option value="Web Analytics Developer">Web Analytics Developer</option>
+            <option value="Content Manager">Content Manager</option>
+            <option value="Content Strategist">Content Strategist</option>
+            <option value="Information Architect">Information Architect</option>
+            <option value="UX Designer">UX Designer</option>
             </select>
             <br>
             <label for="Specific Desired Company" style="font-size: 30px">Specific Desired Company</label>
             <br>
             <p style="text-align:center">
-            <select name="cars" id="cars" style="align:center">
-            <option value="volvo">Apple Inc.</option>
-            <option value="saab">Alphabet Inc.</option>
-            <option value="mercedes">Microsoft Corporation</option>
-            <option value="audi">Samsung Group</option>
-            <option value="audi">Tencent Holdings Ltd.</option>
-            <option value="audi">Meta Platforms</option>
-            <option value="audi">Intel Corporation</option>
-            <option value="audi">Cisco Systems Inc.</option>
+            <select name="Company" id="companies" style="align:center">
+            <option value="Apple Inc.">Apple Inc.</option>
+            <option value="Alphabet Inc.">Alphabet Inc.</option>
+            <option value="Microsoft Corporation">Microsoft Corporation</option>
+            <option value="Samsung Group">Samsung Group</option>
+            <option value="Tencent Holdings Ltd.">Tencent Holdings Ltd.</option>
+            <option value="Meta Platforms">Meta Platforms</option>
+            <option value="Intel Corporation">Intel Corporation</option>
+            <option value="Cisco Systems Inc.">Cisco Systems Inc.</option>
             </select>
             </p>
             <p style="text-align:center">
@@ -85,10 +56,17 @@ Latest commit 9399a70 13 days ago
         </form>
     </center>
 
+    <script>
+        var position = document.getElementsByName("Position")[0].value;
+        var company = document.getElementsByName("Company")[0].value;
+        console.log(position)
+        console.log(company)
+    </script>
+
     <head>
         <link rel="stylesheet" href="style.css">
     </head>
-{% endblock %}
+{%endblock%}
 Footer
 © 2022 GitHub, Inc.
 Footer navigation

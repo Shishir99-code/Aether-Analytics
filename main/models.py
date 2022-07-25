@@ -1,3 +1,4 @@
+from distutils.command.upload import upload
 from django.db import models
 from datetime import datetime
 import pandas as pd
@@ -57,11 +58,27 @@ class Registration(models.Model):
     last_name = models.CharField(max_length=60)
     password = models.CharField(max_length=60)
     University = models.CharField(max_length=60)
-
-class Mentoration(models.Model):
     Years_of_Experience = models.CharField(max_length=60, choices=YEARS, default='1-2')
     Company = models.CharField(max_length=100, choices=COMPANY, default='#Enter Company')
     Position = models.CharField(max_length=60)
     Department = models.CharField(max_length=60)
     State = models.CharField(max_length=60, choices=STATE, default='#Enter State')
     City = models.CharField(max_length=60, choices=CITIES, default='#Enter City')
+    pdf = models.FileField(upload_to='resumes/')
+
+
+    def __str__(self):
+        return self.email
+
+    
+class ResumeText(models.Model):
+    username = models.CharField(max_length=100)
+    resume_text = models.CharField(max_length=100000)
+
+class MatchForm(models.Model):
+    job_path = models.CharField(max_length=60)
+    company_name = models.CharField(max_length=100, choices=COMPANY, default='#Enter Company')
+
+class login(models.Model):
+    email = models.CharField(max_length=100)
+    password = models.CharField(max_length=60)

@@ -4,9 +4,14 @@ Login
 {% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
+<br>
+{%for msg in messages %}
+<div class="alert alert-danger" role="alert">
+    Invalid login information | Check your username and password!
+</div>
+{% endfor %}
 <form method="post">
 {% csrf_token %}{{form|crispy}}
-<p >Don't have an account Create one <a href="/sign-up">Here</a></p>
 <button type="submit" class="btn btn-success">Login</button>
 </form>
 {% endblock %}

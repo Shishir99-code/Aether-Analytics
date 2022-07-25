@@ -1,9 +1,17 @@
+from cgitb import html
+import email
 from django.shortcuts import redirect, render
 from requests import request
-from .forms import RegisterForm, MentorshipForm, ChatForm, RegistrationForm
+from .forms import RegistrationForm, login_form, match_form
+import os
 from django.contrib.auth import login, logout, authenticate
-from .models import Room, Message
+from .models import MatchForm, Room, Message, Registration, ResumeText
 from django.http import HttpResponse, JsonResponse
+from main.resume_matchmaking_utils import *
+from django.contrib import messages
+from django.core.mail import EmailMessage, send_mail
+import random
+import string
 
 # Create your views here.
 def home(request):
@@ -12,20 +20,34 @@ def home(request):
 def sign_up(request):
     form = RegistrationForm()
     if request.method == 'POST':
-        form = RegistrationForm(request.POST)
+        form = RegistrationForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
+            pdf_name = request.FILES['pdf']._name
+            print(os.getcwd())
+            pdf_path ='resumes/'+ pdf_name
+            resume_string = convert_pdf_to_txt(pdf_path)
+            clean_resume_string = clean_text(resume_string, remove_punctuation = True,
+            remove_stopwords = True, remove_num = True)
+            username_value = form.data['email']
+            resume_text = ResumeText(username=username_value, 
+                                        resume_text=clean_resume_string)
+            resume_text.save()
+            return redirect('/login')
+        else:
+            RegistrationForm()
     context = {'form1': form}
     return render(request, 'registration/sign_up.html', context)
 
-def mentor_up(request):
-    form = MentorshipForm()
-    if request.method == 'POST':
-        form = MentorshipForm(request.POST)
-        if form.is_valid():
-            form.save()
-    context = {'form2': form}
-    return render(request, 'registration/mentor_up.html', context)
+# def mentor_up(request):
+#     form = MentorshipForm()
+#     if request.method == 'POST':
+#         form = MentorshipForm(request.POST)
+#         uploaded_file = request.FILES['document']
+#         if form.is_valid():
+#             form.save()
+#     context = {'form2': form}
+#     return render(request, 'registration/mentor_up.html', context)
 
 def chat(request):
     return render(request, 'chat/room.html')
@@ -39,17 +61,6 @@ def room(request, room):
         'room_details': room_details
     })
 
-def find(request):
-    if request.method == 'POST':
-        form_3= ChatForm(request.POST)
-        if form_3.is_valid():
-            user = form_3.save()
-            login(request, user)
-            return redirect('/chat')
-    else:
-        form_3 = ChatForm()
-
-    return render(request, 'main/home.html', {"form3": form_3})
 
 def checkview(request):
     room = request.POST['room_name']
@@ -76,3 +87,91 @@ def getMessages(request, room):
 
     messages = Message.objects.filter(room=room_details.id)
     return JsonResponse({"messages":list(messages.values())})
+
+
+def loginform(request):
+    form = login_form()
+    if request.method == 'POST':
+        form = login_form(request.POST)
+
+        if form.is_valid():
+                form.save()
+                login_email = form.cleaned_data['email']
+                password = form.cleaned_data['password']
+                request.session['username' ] = login_email
+                request.session['password'] = password
+                filtered_user = Registration.objects.filter(email=login_email)
+                user_auth = Registration.objects.filter(email=login_email).count()
+                pwd_auth = Registration.objects.filter(password=password).count()
+                if user_auth >= 1 and pwd_auth >= 1:
+                    print(filtered_user)
+                    return redirect('/match')
+                else:
+                    messages.error(request, 'Invalid login information! | Check your username and password.')
+                    login_form()
+
+    return render(request, 'registration/login.html', {"form": form})
+
+def matchForm(request):
+    form = match_form()
+    if request.method == 'POST':
+        form = match_form(request.POST)
+        if form.is_valid():
+            form.save()
+            job_path = form.cleaned_data['job_path']
+            company_name = form.cleaned_data['company_name']
+            test = Registration.objects
+            filter_one = Registration.objects.filter(Position=job_path)
+            filter_two = filter_one.filter(Company=company_name)
+            login_email = request.session['username'] 
+            email_potential_matches =list(filter_two.values_list('email'))
+            print(email_potential_matches)
+            if len(email_potential_matches) == 0:
+                messages.error(request, 'No Matches Found')
+            elif len(email_potential_matches) > 1:
+                user_clean_resume = list(ResumeText.objects.filter(username=login_email).values_list('resume_text'))[0][0]
+                list_of_scores = []
+                for x in email_potential_matches:
+                    potential_email = x[0]
+                    clean_resume = list(ResumeText.objects.filter(username=potential_email).values_list('resume_text'))[0][0]
+                    score = calculate_jaccard(clean_resume.split(' '), user_clean_resume.split(' '))
+                    list_of_scores.append(score)
+                max_value = max(list_of_scores)
+                index = list_of_scores.index(max_value)
+                match_email = email_potential_matches[index][0]
+            else:
+                match_email = email_potential_matches[0][0]
+
+            characters = string.ascii_uppercase
+            room_code = ''.join(random.choice(characters) for i in range(5))
+            # send_mail(
+            #     f'Chat Room Code for {job_path} at {company_name}',
+            #     f'Your Room Code is {room_code}',
+            #     'aetheranalyticsgroup@outlook.com',
+            #     [login_email],
+            #     fail_silently=False,
+            # )
+
+            # send_mail(
+            #     f'Chat Room Invite Code for {job_path} at {company_name}',
+            #     f'Someone is looking for job advice. Join your room using - {room_code}',
+            #     'aetheranalyticsgroup@outlook.com',
+            #     [match_email],
+            #     fail_silently=False,
+            # )
+
+            email = EmailMessage('Hello', 'World', to=[match_email])
+            email.send()
+            # return redirect('/homeroom')
+        else: 
+            form = match_form()
+
+    
+    return render(request, 'registration/MatchForm.html', {"form": form})
+                
+            
+
+
+    
+
+

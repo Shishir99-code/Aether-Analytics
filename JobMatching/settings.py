@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+from django.contrib import messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -55,6 +57,16 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-info',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ROOT_URLCONF = 'JobMatching.urls'
 
@@ -125,6 +137,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+DEFAULT_FROM_EMAIL='webmaster@localhost' 
+SERVER_EMAIL='root@localhost'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_HOST = 'localhost' 
+# EMAIL_PORT = 587
+EMAIL_PORT = 25
+# EMAIL_HOST_USER = 'aetheranalyticsgroup@outlook.com'
+EMAIL_USE_TLS = True
+EMAIL_HOST_PASSWORD = 'lomuivayavjcswld'
 
 LOGIN_REDIRECT_URL = '/home'
 LOGIN_REDIRECT_URL = '/login'
