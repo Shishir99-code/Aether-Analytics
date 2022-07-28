@@ -15,10 +15,7 @@ from django.forms import ModelForm
 class RegistrationForm(ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     University = forms.CharField(required=False)
-    Years_of_Experience = forms.CharField(required=False)
-    Company = forms.CharField(required=False)
     Department = forms.CharField(required=False)
-    Position = forms.CharField(required=False)
     State = forms.CharField(required=False)
     City = forms.CharField(required=False)
 

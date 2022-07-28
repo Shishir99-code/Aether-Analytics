@@ -59,21 +59,11 @@ def sign_up(request):
             resume_text = ResumeText(username=username_value, 
                                         resume_text=clean_resume_string)
             resume_text.save()
-            return redirect('/login')
+            return redirect('/home')
         else:
             RegistrationForm()
     context = {'form1': form}
     return render(request, 'registration/sign_up.html', context)
-
-# def mentor_up(request):
-#     form = MentorshipForm()
-#     if request.method == 'POST':
-#         form = MentorshipForm(request.POST)
-#         uploaded_file = request.FILES['document']
-#         if form.is_valid():
-#             form.save()
-#     context = {'form2': form}
-#     return render(request, 'registration/mentor_up.html', context)
 
 def chat(request):
     return render(request, 'chat/room.html')
@@ -167,7 +157,7 @@ def matchForm(request):
                 print(e.message)
 
             match_message = Mail(from_email='aetheranalyticsgroup@gmail.com',
-                                to_emails=login_email,
+                                to_emails=match_email,
                                 subject=f'Chat Room Invite Code for {job_path} at {company_name}',
                                 plain_text_content=f'Someone is looking for job advice. Join your room using - {room_code}',
                                 html_content=f'Someone is looking for job advice. Join your room using - {room_code}')
@@ -180,23 +170,6 @@ def matchForm(request):
             except Exception as e:
                 print(e.message)
             return redirect('/homeroom')
-
-            # send_mail(
-            #     f'Chat Room Code for {job_path} at {company_name}',
-            #     f'Your Room Code is {room_code}',
-            #     'aetheranalyticsgroup@outlook.com',
-            #     [login_email],
-            #     fail_silently=False,
-            # )
-
-            # send_mail(
-            #     f'Chat Room Invite Code for {job_path} at {company_name}',
-            #     f'Someone is looking for job advice. Join your room using - {room_code}',
-            #     'aetheranalyticsgroup@outlook.com',
-            #     [match_email],
-            #     fail_silently=False,
-            # )
-            # return redirect('/homeroom')
         else: 
             form = match_form()
 
