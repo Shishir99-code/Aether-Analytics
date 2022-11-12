@@ -21,11 +21,14 @@ YEARS = [
 
 df_location = pd.read_csv("Data/us_cities_states_counties.csv", sep='|')
 df_company = pd.read_csv("Data/nasdaq-listed.csv")
+df_position = pd.read_csv("Data/job-phrase-list.csv")
 
 
 print("here")
 
 # Dictionaries for all states and cities
+unique_positions = pd.unique(df_position['Position'])
+positions_dictionary = list(map(lambda x, y:(x,y), unique_positions, unique_positions))
 unique_states = pd.unique(df_location['State full'].sort_values())
 states_dictionary = list(map(lambda x, y:(x,y), unique_states, unique_states))
 unique_cities = pd.unique(df_location['City'].sort_values())
@@ -35,9 +38,11 @@ unique_company = pd.unique(df_company['Company Name'].sort_values())
 company_dictionary = list(map(lambda x, y:(x,y), unique_company, unique_company))
 
 
+
 COMPANY = company_dictionary
 STATE = states_dictionary
 CITIES = cities_dictionary
+POSITION = positions_dictionary
 
 
 
@@ -56,12 +61,11 @@ class Registration(models.Model):
     email = models.EmailField(max_length=60)
     first_name = models.CharField(max_length=60)
     last_name = models.CharField(max_length=60)
-    phone_number = models.CharField(max_length=12)
     password = models.CharField(max_length=60)
     University = models.CharField(max_length=60)
     Years_of_Experience = models.CharField(max_length=60, choices=YEARS, default='1-2')
-    Company = models.CharField(max_length=100, choices=COMPANY, default='#Enter Company')
-    Position = models.CharField(max_length=60)
+    Company = models.CharField(max_length=100)
+    Position = models.CharField(max_length=100, choices=POSITION, default='Position')
     Department = models.CharField(max_length=60)
     State = models.CharField(max_length=60, choices=STATE, default='#Enter State')
     City = models.CharField(max_length=60, choices=CITIES, default='#Enter City')
@@ -77,8 +81,8 @@ class ResumeText(models.Model):
     resume_text = models.CharField(max_length=100000)
 
 class MatchForm(models.Model):
-    job_path = models.CharField(max_length=60)
-    company_name = models.CharField(max_length=100, choices=COMPANY, default='#Enter Company')
+    job_path = models.CharField(max_length=100, choices=POSITION, default='Position')
+    company_name = models.CharField(max_length=100)
 
 class login(models.Model):
     email = models.CharField(max_length=100)

@@ -121,6 +121,8 @@ def matchForm(request):
             print(email_potential_matches)
             if len(email_potential_matches) == 0:
                 messages.error(request, 'No Matches Found')
+                match_form()
+                return redirect('/match')
             elif len(email_potential_matches) > 1:
                 user_clean_resume = list(ResumeText.objects.filter(username=login_email).values_list('resume_text'))[0][0]
                 list_of_scores = []
@@ -135,9 +137,6 @@ def matchForm(request):
             else:
                 match_email = email_potential_matches[0][0]
 
-            user_phone_number = list(Registration.objects.filter(email=login_email).values_list('phone_number'))[0][0]
-            match_phone_number = list(Registration.objects.filter(email=match_email).values_list('phone_number'))[0][0]
-            print(user_phone_number)
             characters = string.ascii_uppercase
             room_code = ''.join(random.choice(characters) for i in range(5))
             API_key = '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'
